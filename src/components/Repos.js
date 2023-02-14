@@ -1,8 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
-import { GithubContext } from '../context/context';
-import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from './Charts';
+import React, { useContext } from "react";
+import styled from "styled-components";
+import OpenSourceContext from "../context/context";
+import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from "./Charts";
 const Repos = () => {
+  const { repos } = useContext(OpenSourceContext);
+  // console.log(repos);
   return <h2>repos component</h2>;
 };
 

@@ -1,9 +1,27 @@
-import React from 'react';
-import { GithubContext } from '../context/context';
-import styled from 'styled-components';
+import React, { useContext } from "react";
+import OpenSourceContext from "../context/context";
+import styled from "styled-components";
 
 const Followers = () => {
-  return <h2>followers component</h2>;
+  const { followers } = useContext(OpenSourceContext);
+  const followersArr = followers.map((follower) => {
+    const { avatar_url, login, html_url, id } = follower;
+    return (
+      <article key={id}>
+        <img src={avatar_url} alt={login} />
+        <div>
+          <h4>{login}</h4>
+          <a href={html_url}>{html_url}</a>
+        </div>
+      </article>
+    );
+  });
+
+  return (
+    <Wrapper>
+      <div className="followers">{followersArr}</div>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.article`
@@ -14,7 +32,7 @@ const Wrapper = styled.article`
   position: relative;
 
   &::before {
-    content: ' followers';
+    content: " followers";
     position: absolute;
     top: 0;
     left: 0;
