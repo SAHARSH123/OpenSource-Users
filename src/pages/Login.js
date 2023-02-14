@@ -1,8 +1,17 @@
-import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
-import styled from 'styled-components';
-import loginImg from '../images/login-img.svg';
+import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import styled from "styled-components";
+import loginImg from "../images/login-img.svg";
 const Login = () => {
+  return (
+    <Wrapper>
+      <div className="container">
+        <img src={loginImg} alt="openSource User" />
+        <h1>OpenSource User</h1>
+        <button className="btn">login</button>
+      </div>
+    </Wrapper>
+  );
   return <h2>login page</h2>;
 };
 const Wrapper = styled.section`
