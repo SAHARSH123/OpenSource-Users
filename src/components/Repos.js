@@ -4,8 +4,34 @@ import OpenSourceContext from "../context/context";
 import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from "./Charts";
 const Repos = () => {
   const { repos } = useContext(OpenSourceContext);
-  // console.log(repos);
-  return <h2>repos component</h2>;
+
+  const languages = repos.reduce((total, rep) => {
+    let { language } = rep;
+    if (language) {
+      if (!total[language]) {
+        total[language] = 1;
+        return total;
+      } else {
+        total[language] = total[language] + 1;
+        return total;
+      }
+    } else return total;
+  }, {});
+
+  const langArr = [];
+  for (let key in languages) {
+    langArr.push({ label: key, value: languages[key] });
+  }
+  const chartData = langArr.slice(0, 5);
+  chartData.sort((a, b) => b.value - a.value);
+  return (
+    // <ExampleChart chartData={chartData} />
+    <section className="section">
+      <Wrapper className="section-center">
+        <Pie3D chartData={chartData} />
+      </Wrapper>
+    </section>
+  );
 };
 
 const Wrapper = styled.div`
@@ -13,11 +39,11 @@ const Wrapper = styled.div`
   justify-items: center;
   gap: 2rem;
   @media (min-width: 800px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr;
   }
 
   @media (min-width: 1200px) {
-    grid-template-columns: 2fr 3fr;
+    grid-template-columns: 3fr;
   }
 
   div {

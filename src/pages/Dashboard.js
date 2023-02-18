@@ -13,7 +13,7 @@ const Dashboard = () => {
       )}
       {loading === false && <Info />}
       {loading === false && <User />}
-      {/* <Repos /> */}
+      {loading === false && <Repos />}
     </main>
   );
 };
