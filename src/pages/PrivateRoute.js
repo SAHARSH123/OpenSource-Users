@@ -1,8 +1,12 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
+import React from "react";
+import { Route, Redirect, Navigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import Dashboard from "./Dashboard";
 
-const PrivateRoute = () => {
-  return <h2>private route component</h2>;
+const PrivateRoute = ({ children }) => {
+  const { isAuthenticated, user } = useAuth0();
+  const isLoggedIn = user && isAuthenticated;
+
+  return isLoggedIn ? children : <Navigate to="/login" />;
 };
 export default PrivateRoute;

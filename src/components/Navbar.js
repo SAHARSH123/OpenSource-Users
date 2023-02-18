@@ -5,7 +5,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 const Navbar = () => {
   const { user, isAuthenticated, isLoading, loginWithRedirect, logout } =
     useAuth0();
-  console.log(isAuthenticated, user);
   const isUser = user && isAuthenticated;
 
   return (
@@ -16,15 +15,13 @@ const Navbar = () => {
           Welcome <strong>{user.name}</strong>
         </h4>
       )}
-      {isUser ? (
+      {isUser && (
         <button
           onClick={() =>
             logout({ logoutParams: { returnTo: window.location.origin } })
           }>
           Logout
         </button>
-      ) : (
-        <button onClick={loginWithRedirect}>Login</button>
       )}
     </Wrapper>
   );
