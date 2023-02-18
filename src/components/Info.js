@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import OpenSourceContext, { GithubContext } from "../context/context";
+import OpenSourceContext from "../context/context";
 import styled from "styled-components";
 import { GoRepo, GoGist } from "react-icons/go";
 import { FiUsers, FiUserPlus } from "react-icons/fi";
