@@ -28,7 +28,6 @@ function OpenSourceContextProvider(props) {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   };
@@ -49,18 +48,21 @@ function OpenSourceContextProvider(props) {
       ]);
       const user = userResponse?.value?.data;
       const follower = followerResponse?.value?.data;
-      if (userResponse?.status === "fulfilled") {
+      if (
+        userResponse?.status === "fulfilled" &&
+        followerResponse?.status === "fulfilled"
+      ) {
         setOpenSourceUser(user);
+        setFollowers(follower);
+      } else {
+        setError({ show: true, msg: "User Not found" });
       }
 
-      if (followerResponse?.status === "fulfilled") {
-        setFollowers(follower);
-      }
       fetchRemainingRequest();
     } catch (error) {
       setIsLoading(false);
       setError({ show: true, msg: error?.response?.data?.message });
-      console.log(error);
+      // console.log(error);
     }
   };
 

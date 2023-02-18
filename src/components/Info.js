@@ -7,7 +7,7 @@ import { FiUsers, FiUserPlus } from "react-icons/fi";
 const UserInfo = () => {
   const { openSourceUser } = useContext(OpenSourceContext);
   const { public_repos, public_gists, followers, following } = openSourceUser;
-  console.log(public_repos);
+  // console.log(public_repos);
   const panelItems = [
     {
       id: 1,
