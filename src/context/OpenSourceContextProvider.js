@@ -36,24 +36,27 @@ function OpenSourceContextProvider(props) {
     const baseUrl = rootUrl + "/users/";
     const userUrl = baseUrl + userName;
     const followerUrl = userUrl + "/followers";
+    const repoUrl = userUrl + "/repos";
     setIsLoading(true);
     setError({ show: false, msg: "" });
     try {
       const promises1 = axios.get(userUrl);
       const promise2 = axios.get(followerUrl);
+      const promise3 = axios.get(repoUrl);
 
-      const [userResponse, followerResponse] = await Promise.allSettled([
-        promises1,
-        promise2,
-      ]);
+      const [userResponse, followerResponse, reposResponse] =
+        await Promise.allSettled([promises1, promise2, promise3]);
       const user = userResponse?.value?.data;
       const follower = followerResponse?.value?.data;
+      const repos = reposResponse?.value?.data;
       if (
         userResponse?.status === "fulfilled" &&
-        followerResponse?.status === "fulfilled"
+        followerResponse?.status === "fulfilled" &&
+        reposResponse?.status === "fulfilled"
       ) {
         setOpenSourceUser(user);
         setFollowers(follower);
+        setRepos(repos);
       } else {
         setError({ show: true, msg: "User Not found" });
       }
