@@ -4,10 +4,11 @@ import { MdSearch } from "react-icons/md";
 import OpenSourceContext from "../context/context";
 const Search = () => {
   const [user, setUser] = useState("");
-  const { request } = useContext(OpenSourceContext);
+  const { request, error, fetchUser, loading } = useContext(OpenSourceContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    fetchUser(user);
   };
 
   const handleChange = (e) => {
@@ -18,6 +19,7 @@ const Search = () => {
   return (
     <section className="section">
       <Wrapper className="section-center">
+        <ErrorWrapper>{error.show === true && <p>{error.msg}</p>}</ErrorWrapper>
         <form onSubmit={handleSubmit}>
           <div className="form-control">
             <MdSearch />
@@ -27,7 +29,7 @@ const Search = () => {
               onChange={handleChange}
               value={user}
             />
-            {request > 0 && <button type="submit">Search</button>}
+            {request > 0 && !loading && <button type="submit">Search</button>}
           </div>
         </form>
         <h3>Requests : {request} / 60</h3>

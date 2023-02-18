@@ -14,27 +14,71 @@ function OpenSourceContextProvider(props) {
 
   const [loading, setIsLoading] = useState(false);
   const [request, setRequest] = useState(0);
+  const [error, setError] = useState({ show: false, msg: "" });
 
-  const fetchRequest = async () => {
+  const fetchRemainingRequest = async () => {
     const url = rootUrl + "/rate_limit";
     try {
       const response = await axios.get(url);
       const remaining = response?.data?.rate?.remaining;
+
       setRequest(remaining);
       if (remaining === 0) {
+        setError({ show: true, msg: "You have excedded the limit!" });
       }
+      setIsLoading(false);
     } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  const fetchUser = async (userName) => {
+    const baseUrl = rootUrl + "/users/";
+    const userUrl = baseUrl + userName;
+    const followerUrl = userUrl + "/followers";
+    setIsLoading(true);
+    setError({ show: false, msg: "" });
+    try {
+      const promises1 = axios.get(userUrl);
+      const promise2 = axios.get(followerUrl);
+
+      const [userResponse, followerResponse] = await Promise.allSettled([
+        promises1,
+        promise2,
+      ]);
+      const user = userResponse?.value?.data;
+      const follower = followerResponse?.value?.data;
+      if (userResponse?.status === "fulfilled") {
+        setOpenSourceUser(user);
+      }
+
+      if (followerResponse?.status === "fulfilled") {
+        setFollowers(follower);
+      }
+      fetchRemainingRequest();
+    } catch (error) {
+      setIsLoading(false);
+      setError({ show: true, msg: error?.response?.data?.message });
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchRequest();
+    fetchRemainingRequest();
   }, []);
 
   return (
     <OpenSourceContext.Provider
-      value={{ openSourceUser, repos, followers, request }}>
+      value={{
+        openSourceUser,
+        repos,
+        followers,
+        request,
+        error,
+        fetchUser,
+        loading,
+      }}>
       {props.children}
     </OpenSourceContext.Provider>
   );
